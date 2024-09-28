@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Big Brew</title>
+
+    <!-- CSS -->
+    @vite('resources/css/app.css')
+
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+
+    <style>
+        .sb-sidenav-collapse-arrow {
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+        .sb-sidenav-collapse-arrow.rotate {
+            transform: rotate(180deg); /* Rotate 180 degrees when active */
+        }
+
+        .collapse {
+            display: none;
+        }
+
+        .collapse.show {
+            display: block;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 flex justify-between items-center">
+        <a class="text-white font-bold text-xl" href="{{ url('/dashboard') }}">BIGBREW</a>
+        <button class="text-white" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Layout -->
+    <div class="flex">
+        <div class="w-64 bg-gray-800 h-screen">
+            <!-- Sidebar -->
+            <nav class="mt-4">
+                <div class="px-4">
+                    <div class="nav">
+                        <a class="flex items-center text-white py-2 px-4 hover:bg-gray-700" href="{{ route('dashboard') }}">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            Dashboard
+                        </a>
+
+                        <!-- Products Dropdown -->
+                        <div>
+                            <a class="flex items-center text-white py-2 px-4 hover:bg-gray-700" data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
+                                <i class="fas fa-box mr-3"></i>
+                                Products
+                                <i class="fas fa-angle-down sb-sidenav-collapse-arrow ml-auto"></i>
+                            </a>
+                            <div class="collapse" id="collapseProducts">
+                                <nav class="bg-gray-700 px-4">
+                                    {{-- Product Routes --}}
+                                </nav>
+                            </div>
+                        </div>
+
+                        <!-- Orders Dropdown -->
+                        <div>
+                            <a class="flex items-center text-white py-2 px-4 hover:bg-gray-700" data-bs-toggle="collapse" data-bs-target="#collapseOrders" aria-expanded="false" aria-controls="collapseOrders">
+                                <i class="fas fa-shopping-cart mr-3"></i>
+                                Orders
+                                <i class="fas fa-angle-down sb-sidenav-collapse-arrow ml-auto"></i>
+                            </a>
+                            <div class="collapse" id="collapseOrders">
+                                <nav class="bg-gray-700 px-4">
+                                    {{-- Order Routes --}}
+                                </nav>
+                            </div>
+                        </div>
+
+                        <a class="flex items-center text-white py-2 px-4 hover:bg-gray-700" href="message.html">
+                            <i class="fas fa-envelope mr-3"></i>
+                            Messages
+                        </a>
+
+                        <!-- Settings Dropdown -->
+                        <div>
+                            <a class="flex items-center text-white py-2 px-4 hover:bg-gray-700"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseSettings"
+                            aria-expanded="false"
+                            aria-controls="collapseSettings">
+                                <i class="fas fa-cogs mr-3"></i>
+                                Settings
+                                <i class="fas fa-angle-down sb-sidenav-collapse-arrow ml-auto"></i>
+                            </a>
+                            <div class="collapse" id="collapseSettings">
+                                <nav class="bg-gray-700 px-4">
+                                    <a class="text-white py-2 hover:bg-gray-600" href="AccountInformation.html">Account Information</a>
+                                    <a class="text-white py-2 hover:bg-gray-600" href="ShopInformation.html">Shop/Branch Information</a>
+
+                                    <!-- Store Status Toggle -->
+                                    <div class="flex items-center justify-between py-2">
+                                        <span class="text-white" id="storeStatus">Store Closed</span>
+                                        <div class="toggle-switch cursor-pointer" onclick="toggleStoreStatus()">
+                                            <div class="slider bg-red-500 w-16 h-8 rounded-full relative transition-transform"></div>
+                                        </div>
+                                    </div>
+                                    <a class="text-white py-2 hover:bg-gray-600" href="ChatSettings.html">Chat Settings</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Main Content -->
+                <div class="flex-1 p-6">
+                    @yield('content')
+                    @include('components.footer')
+                </div>
+            </div>
+
+            <!-- Store Status Toggle Script -->
+            <script>
+                let storeOpen = false;
+                function toggleStoreStatus() {
+                    storeOpen = !storeOpen;
+                    const statusElement = document.getElementById('storeStatus');
+                    const toggleSwitch = document.querySelector('.toggle-switch');
+                    const slider = document.querySelector('.toggle-switch .slider');
+                    if (storeOpen) {
+                        statusElement.textContent = 'Store Open';
+                        toggleSwitch.style.backgroundColor = 'green';
+                        slider.style.transform = 'translateX(100%)'; // Move to the right
+                    } else {
+                        statusElement.textContent = 'Store Closed';
+                        toggleSwitch.style.backgroundColor = 'red';
+                        slider.style.transform = 'translateX(0)'; // Move to the left
+                    }
+                }
+
+            document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(dropdown => {
+                dropdown.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-bs-target');
+                    const collapseElement = document.querySelector(targetId);
+                    const arrow = this.querySelector('.sb-sidenav-collapse-arrow');
+
+                    // Toggle arrow rotation
+                    arrow.classList.toggle('rotate');
+
+                    // Toggle the collapse
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                    // Update aria-expanded attribute
+                    this.setAttribute('aria-expanded', !isExpanded);
+
+                    // Toggle collapse instance
+                    const collapseInstance = bootstrap.Collapse.getInstance(collapseElement);
+                    if (isExpanded) {
+                        collapseInstance.hide();
+                    } else {
+                        collapseInstance.show();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
