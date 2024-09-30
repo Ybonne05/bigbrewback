@@ -6,8 +6,13 @@ content: [
     "./resources/**/*.vue",
 ],
 theme: {
-    extend: {},
+    extend: {
+        colors: {
+            customOrange: '#a46505',
+        },
+    },
 },
 plugins: [],
 }
+
 
